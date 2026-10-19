@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10 - Gửi Nu</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Montserrat:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at center, #fff3b0 0%, #f6d365 40%, #fd9a72 100%);
+      user-select: none;
+    }
+
+    /* Canvas pháo hoa nền động */
+    #effectsCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Floating Stickers Background */
+    .sticker-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .sticker {
+      position: absolute;
+      font-size: 3.2rem;
+      opacity: 0.85;
+      animation: floatSticker 5s ease-in-out infinite alternate;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2));
+    }
+
+    @keyframes floatSticker {
+      0% { transform: translateY(0px) rotate(-15deg) scale(1); }
+      50% { transform: translateY(-25px) rotate(15deg) scale(1.25); }
+      100% { transform: translateY(12px) rotate(-8deg) scale(0.95); }
+    }
+
+    /* Container chính */
+    .container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      transition: transform 0.1s ease;
+    }
+
+    /* Tiêu đề "NHẤN VÀO BÓ HOA" */
+    .prompt-text {
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: #d32f2f;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 2px 2px 6px rgba(0,0,0,0.2);
+      letter-spacing: 2px;
+      margin-bottom: 25px;
+      animation: pulseText 1.2s infinite alternate;
+      cursor: pointer;
+    }
+
+    @keyframes pulseText {
+      0% { transform: scale(1); opacity: 0.85; }
+      100% { transform: scale(1.1); opacity: 1; text-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 35px #e64a19; }
+    }
+
+    /* Bó hoa tương tác 3D */
+    .bouquet-wrapper {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: floatBouquet 3.5s ease-in-out infinite;
+    }
+
+    .bouquet-glow-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,215,0,0.6) 0%, rgba(255,107,107,0.3) 50%, transparent 70%);
+      animation: pulseGlow 2s infinite ease-in-out;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.5; }
+      50% { transform: translate(-50%, -50%) scale(1.25); opacity: 0.9; }
+    }
+
+    .bouquet-wrapper:hover {
+      transform: scale(1.12) rotate(3deg);
+    }
+
+    @keyframes floatBouquet {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+
+    .bouquet-svg {
+      width: 310px;
+      height: 310px;
+      filter: drop-shadow(0 18px 35px rgba(212, 107, 0, 0.45));
+    }
+
+    .bouquet-badge {
+      position: absolute;
+      font-size: 2.8rem;
+      animation: bounceBadge 2s infinite ease-in-out;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+    }
+    .badge-1 { top: -20px; left: -25px; animation-delay: 0s; }
+    .badge-2 { top: -20px; right: -25px; animation-delay: 0.5s; }
+    .badge-3 { bottom: 25px; left: -35px; animation-delay: 1s; }
+    .badge-4 { bottom: 25px; right: -35px; animation-delay: 1.5s; }
+
+    @keyframes bounceBadge {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-12px) scale(1.25); }
+    }
+
+    .greeting-header {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3.6rem;
+      color: #b71c1c;
+      margin-bottom: 15px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.8s ease;
+      display: none;
+      text-shadow: 2px 2px 12px rgba(255, 255, 255, 1), 0 0 20px #f39c12;
+    }
+
+    .greeting-header.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Lá thư Modal */
+    .letter-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(5px);
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+      padding: 15px;
+    }
+
+    .letter-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .letter-card {
+      background: rgba(255, 253, 246, 0.97);
+      border: 3px solid #f39c12;
+      border-radius: 28px;
+      width: 100%;
+      max-width: 760px;
+      max-height: 86vh;
+      box-shadow: 0 0 35px rgba(243, 156, 18, 0.9), 0 25px 60px rgba(0,0,0,0.4);
+      padding: 35px 32px 25px 32px;
+      overflow-y: auto;
+      position: relative;
+      transform: scale(0.7) translateY(40px);
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-align: left;
+      color: #2c3e50;
+      animation: magicBorder 4s linear infinite;
+    }
+
+    #letterCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .letter-body-inner {
+      position: relative;
+      z-index: 3;
+    }
+
+    @keyframes magicBorder {
+      0% { border-color: #f39c12; box-shadow: 0 0 30px rgba(243, 156, 18, 0.8); }
+      33% { border-color: #e74c3c; box-shadow: 0 0 30px rgba(231, 76, 60, 0.8); }
+      66% { border-color: #e84393; box-shadow: 0 0 30px rgba(232, 67, 147, 0.8); }
+      100% { border-color: #f39c12; box-shadow: 0 0 30px rgba(243, 156, 18, 0.8); }
+    }
+
+    .letter-overlay.active .letter-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .letter-card::-webkit-scrollbar {
+      width: 8px;
+    }
+    .letter-card::-webkit-scrollbar-thumb {
+      background: linear-gradient(#f39c12, #e74c3c);
+      border-radius: 10px;
+    }
+
+    .letter-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.6rem;
+      color: #c0392b;
+      margin-bottom: 20px;
+      border-bottom: 2px dashed #f39c12;
+      padding-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .letter-content p {
+      font-size: 0.98rem;
+      line-height: 1.8;
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+
+    .quote-box {
+      font-style: italic;
+      background: #fff5e6;
+      border-left: 5px solid #f39c12;
+      padding: 14px 20px;
+      margin: 18px 0;
+      border-radius: 0 12px 12px 0;
+      color: #d35400;
+    }
+
+    .letter-bullets {
+      list-style: none;
+      margin: 18px 0;
+    }
+
+    .letter-bullets li {
+      margin-bottom: 16px;
+      line-height: 1.75;
+      font-size: 0.96rem;
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .letter-bullets li::before {
+      content: "💛";
+      position: absolute;
+      left: 0;
+      top: 2px;
+      font-size: 1rem;
+    }
+
+    .letter-signature {
+      margin-top: 28px;
+      text-align: right;
+      font-size: 1rem;
+      color: #2c3e50;
+      font-weight: 500;
+    }
+
+    .letter-signature .name {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.3rem;
+      color: #c0392b;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+
+    .close-btn {
+      display: block;
+      margin: 28px auto 0 auto;
+      padding: 12px 42px;
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(231, 76, 60, 0.5);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 5;
+    }
+
+    .close-btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(231, 76, 60, 0.7);
+      background: linear-gradient(135deg, #ff6b6b, #ee5253);
+    }
+
+    /* Hiệu ứng Gấu 3D Vector SVG ôm Bó Hoa (Chạy Offline 100% không sợ lỗi) */
+    .giant-bear-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .giant-bear-overlay.show {
+      opacity: 1;
+    }
+
+    .giant-bear-svg {
+      width: 360px;
+      height: 360px;
+      filter: drop-shadow(0 25px 45px rgba(0,0,0,0.35));
+      transform: scale(0.3) rotate(-10deg);
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .giant-bear-overlay.show .giant-bear-svg {
+      transform: scale(1) rotate(0deg);
+      animation: bearBounce 1.5s infinite ease-in-out alternate;
+    }
+
+    @keyframes bearBounce {
+      0% { transform: scale(1) translateY(0); }
+      100% { transform: scale(1.06) translateY(-12px); }
+    }
+
+    @media (max-width: 600px) {
+      .prompt-text { font-size: 1.6rem; }
+      .bouquet-svg { width: 240px; height: 240px; }
+      .greeting-header { font-size: 2.2rem; }
+      .letter-card { padding: 25px 20px 20px 20px; }
+      .letter-title { font-size: 1.9rem; }
+      .letter-content p, .letter-bullets li { font-size: 0.92rem; }
+      .giant-bear-svg { width: 270px; height: 270px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Stickers Grid -->
+  <div class="sticker-container">
+    <div class="sticker" style="top: 5%; left: 4%; animation-delay: 0s;">🌻</div>
+    <div class="sticker" style="top: 10%; right: 5%; animation-delay: 1.2s;">🤝</div>
+    <div class="sticker" style="top: 25%; left: 1%; animation-delay: 0.5s;">🧸</div>
+    <div class="sticker" style="top: 20%; right: 2%; animation-delay: 2s;">👭</div>
+    <div class="sticker" style="top: 55%; left: 3%; animation-delay: 1.5s;">💖</div>
+    <div class="sticker" style="top: 60%; right: 3%; animation-delay: 0.8s;">📚</div>
+    <div class="sticker" style="top: 80%; left: 6%; animation-delay: 2.5s;">🎨</div>
+    <div class="sticker" style="top: 85%; right: 7%; animation-delay: 1.8s;">✨</div>
+    <div class="sticker" style="top: 40%; left: 12%; animation-delay: 0.3s;">🌸</div>
+    <div class="sticker" style="top: 45%; right: 12%; animation-delay: 2.2s;">🌷</div>
+    <div class="sticker" style="top: 3%; left: 45%; animation-delay: 1s;">🎉</div>
+  </div>
+
+  <canvas id="effectsCanvas"></canvas>
+
+  <div class="container" id="mainContainer">
+    <div id="greetingHeader" class="greeting-header">Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10</div>
+    <div id="promptText" class="prompt-text" onclick="openFlowerEvent(event)">NHẤN VÀO BÓ HOA</div>
+    
+    <div class="bouquet-wrapper" onclick="openFlowerEvent(event)">
+      <div class="bouquet-glow-ring"></div>
+
+      <div class="bouquet-badge badge-1">🤝</div>
+      <div class="bouquet-badge badge-2">🌻</div>
+      <div class="bouquet-badge badge-3">🧸</div>
+      <div class="bouquet-badge badge-4">💖</div>
+
+      <!-- Bó hoa SVG 3D Sang Trọng -->
+      <svg class="bouquet-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="wrapperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ff758c"/>
+            <stop offset="100%" stop-color="#ff7eb3"/>
+          </linearGradient>
+          <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f12711"/>
+            <stop offset="100%" stop-color="#f5af19"/>
+          </linearGradient>
+        </defs>
+
+        <path d="M 45,100 L 100,195 L 155,100 Q 100,125 45,100 Z" fill="url(#wrapperGrad)" stroke="#fff" stroke-width="2"/>
+        <path d="M 35,80 L 100,195 L 165,80 Q 100,105 35,80 Z" fill="#ffffff" opacity="0.4"/>
+        <path d="M 55,95 L 100,195 L 145,95 Z" fill="#ff4757" opacity="0.3"/>
+
+        <path d="M 85,145 Q 100,135 115,145 Q 130,165 100,158 Q 70,165 85,145 Z" fill="url(#ribbonGrad)"/>
+        <circle cx="100" cy="148" r="6" fill="#ffeaa7"/>
+
+        <path d="M 40,70 Q 15,35 55,45 Z" fill="#2ed573"/>
+        <path d="M 160,70 Q 185,35 145,45 Z" fill="#2ed573"/>
+        <path d="M 90,40 Q 100,10 110,40 Z" fill="#26de81"/>
+
+        <!-- Bông Hoa Hướng Dương chính giữa -->
+        <g transform="translate(100, 68)">
+          <g fill="#ffa502">
+            <ellipse cx="0" cy="-22" rx="5" ry="12"/>
+            <ellipse cx="0" cy="22" rx="5" ry="12"/>
+            <ellipse cx="-22" cy="0" rx="12" ry="5"/>
+            <ellipse cx="22" cy="0" rx="12" ry="5"/>
+            <ellipse cx="-15" cy="-15" rx="6" ry="11" transform="rotate(-45 -15 -15)"/>
+            <ellipse cx="15" cy="15" rx="6" ry="11" transform="rotate(-45 15 15)"/>
+            <ellipse cx="-15" cy="15" rx="6" ry="11" transform="rotate(45 -15 15)"/>
+            <ellipse cx="15" cy="-15" rx="6" ry="11" transform="rotate(45 15 -15)"/>
+          </g>
+          <circle cx="0" cy="0" r="14" fill="#574b90"/>
+          <circle cx="0" cy="0" r="11" fill="#303952"/>
+        </g>
+
+        <!-- Hoa hồng xung quanh -->
+        <g transform="translate(60, 85)">
+          <circle cx="0" cy="0" r="18" fill="#ff4757"/>
+          <circle cx="-3" cy="-3" r="11" fill="#ff6b81"/>
+          <circle cx="2" cy="2" r="6" fill="#d63031"/>
+        </g>
+        <g transform="translate(140, 85)">
+          <circle cx="0" cy="0" r="18" fill="#ff4757"/>
+          <circle cx="-3" cy="-3" r="11" fill="#ff6b81"/>
+          <circle cx="2" cy="2" r="6" fill="#d63031"/>
+        </g>
+
+        <!-- Hoa cúc điểm -->
+        <g transform="translate(75, 45)">
+          <circle cx="0" cy="0" r="14" fill="#ffffff"/>
+          <circle cx="0" cy="0" r="5" fill="#f1c40f"/>
+        </g>
+        <g transform="translate(125, 45)">
+          <circle cx="0" cy="0" r="14" fill="#ffffff"/>
+          <circle cx="0" cy="0" r="5" fill="#f1c40f"/>
+        </g>
+
+        <circle cx="100" cy="25" r="4" fill="#fff"/>
+        <circle cx="45" cy="55" r="4" fill="#fff"/>
+        <circle cx="155" cy="55" r="4" fill="#fff"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Lá thư Modal -->
+  <div id="letterOverlay" class="letter-overlay">
+    <div class="letter-card" id="letterCard">
+      <canvas id="letterCanvas"></canvas>
+
+      <div class="letter-body-inner">
+        <div class="letter-title">
+          <span>Gửi Nu, 🌻</span>
+          <span style="font-size: 1.8rem;">🤝👭🧸</span>
+        </div>
+        <div class="letter-content">
+          <p>Hôm nay là ngày 20/10 — <strong>Vietnamese Women’s Day</strong>. Giữa những tất bật của cuộc sống và rộn ràng của ngày lễ, Đạt muốn dành một khoảng lặng thật yên bình để viết những dòng thư chân thành nhất gửi đến Nu.</p>
+          
+          <div class="quote-box">
+            <strong>“A true friendship isn’t about who you’ve known the longest; it’s about who walked into your life, said ‘I’m here for you,’ and proved it.”</strong>
+          </div>
+
+          <p>Người ta thường bảo tình bạn sâu sắc cần rất nhiều năm tháng để đong đếm. Nhưng từ ngày gặp và làm quen với Nu cách đây vài tháng, Đạt mới hiểu rằng có những mối nhân duyên không tính bằng thời gian, mà đo bằng sự thấu hiểu, sự chân thành và đồng điệu trong tâm hồn.</p>
+
+          <p><strong>Though our journey together has just begun a few months ago, knowing you has been one of the most beautiful highlights of my year. Your kindness, your bright smile, and the genuine warmth you bring into every conversation have truly made a lasting impression on me.</strong></p>
+
+          <p>Đạt luôn dành cho Nu một sự ngưỡng mộ rất riêng. Cậu là một cô gái biết yêu thương bản thân, biết chăm chút cho tâm hồn mình và luôn kiêu hãnh tỏa sáng theo cách dịu dàng nhất. Không chỉ vậy, nhìn Nu mỗi ngày vừa miệt mài học tập, vừa trao đi sự kiên nhẫn, tình yêu thương ấm áp cho các bé mầm non, Đạt càng thêm trân trọng nét đẹp tâm hồn của cậu hơn bao giờ hết.</p>
+
+          <div class="quote-box" style="border-left-color: #e74c3c; background: #fff0f0;">
+            <strong>“Self-love is not selfish; it’s the foundation of everything good. And watching you love yourself, pursue your education, and care for those young minds with so much patience is deeply inspiring.”</strong>
+          </div>
+
+          <p><strong>Being a preschool teacher requires a big heart, immense grace, and infinite love — and you embody all of those qualities so effortlessly.</strong> Đạt tin rằng những hạt mầm tử tế và tình yêu mà Nu gieo vào lòng các con mỗi ngày sẽ nở thành những bông hoa rực rỡ nhất.</p>
+
+          <p>Nhân ngày đặc biệt này, Đạt muốn gửi đến Nu những lời chúc lắng đọng nhất từ sâu thẫm lòng mình:</p>
+
+          <ul class="letter-bullets">
+            <li>
+              Mong Nu luôn giữ trọn tình yêu bản thân: <strong>Always prioritize your own happiness, embrace every part of who you are, and never let anyone dim your sparkle. May you continue to walk with confidence, pride, and self-worth.</strong> Cuộc sống sẽ có lúc mệt mỏi hay áp lực, mong Nu luôn bình yên, tâm hồn dịu dàng và nụ cười rạng rỡ luôn nở trên môi.
+            </li>
+            <li>
+              Mong cô giáo Nu luôn giữ vững ngọn lửa nhiệt huyết: <strong>May your passion for teaching and learning never fade. I hope every single day with your little students brings you pure joy, innocent laughter, and warm, memorable moments.</strong>
+            </li>
+            <li>
+              Mong cuộc đời luôn dịu dàng với Nu: <strong>May life treat you with the utmost kindness. I wish you peace in your heart, strength through any challenge, and smooth, successful paths in both your studies and career.</strong>
+            </li>
+          </ul>
+
+          <p><strong>Thank you for being such an extraordinary friend, a precious soul, and a true ray of sunshine in my world. I am so grateful that our paths crossed.</strong> Cảm ơn Nu vì đã xuất hiện và trở thành một người bạn thân thiết, quý giá trong đời Đạt. Mong rằng chặng đường sắp tới, tụi mình vẫn sẽ giữ trọn sự chân thành này để cùng chia sẻ thêm thật nhiều niềm vui và cột mốc ý nghĩa.</p>
+
+          <p style="color: #c0392b; margin-top: 18px; font-size: 1.02rem;">
+            <strong>Wishing you a magical, heartwarming, and unforgettable 20th of October! May your heart always be full of love, grace, and eternal happiness.</strong>
+          </p>
+
+          <div class="letter-signature">
+            Trân trọng và thương quý Nu rất nhiều,<br>
+            <div class="name">Lại Thế Đạt</div>
+          </div>
+        </div>
+
+        <button class="close-btn" onclick="closeLetter()">Đóng / Xem lại</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chú Gấu 3D Bằng Mã SVG (Đảm bảo 100% không bao giờ bị lỗi ảnh) -->
+  <div id="giantBearOverlay" class="giant-bear-overlay">
+    <svg class="giant-bear-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bearBodyGrad" cx="30%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#fff5eb"/>
+          <stop offset="70%" stop-color="#f7d7be"/>
+          <stop offset="100%" stop-color="#e5b898"/>
+        </radialGradient>
+        <radialGradient id="bearEarGrad" cx="40%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#ffb2c2"/>
+          <stop offset="100%" stop-color="#e87a90"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Tai gấu trái -->
+      <circle cx="50" cy="50" r="28" fill="url(#bearBodyGrad)"/>
+      <circle cx="50" cy="50" r="16" fill="url(#bearEarGrad)"/>
+
+      <!-- Tai gấu phải -->
+      <circle cx="150" cy="50" r="28" fill="url(#bearBodyGrad)"/>
+      <circle cx="150" cy="50" r="16" fill="url(#bearEarGrad)"/>
+
+      <!-- Thân gấu -->
+      <ellipse cx="100" cy="140" rx="65" ry="60" fill="url(#bearBodyGrad)"/>
+
+      <!-- Đầu gấu -->
+      <circle cx="100" cy="90" r="55" fill="url(#bearBodyGrad)"/>
+
+      <!-- Mõm gấu -->
+      <ellipse cx="100" cy="100" rx="22" ry="16" fill="#ffffff"/>
+      <!-- Mũi gấu -->
+      <ellipse cx="100" cy="94" rx="9" ry="6" fill="#5c3d2e"/>
+
+      <!-- Mắt gấu -->
+      <circle cx="75" cy="82" r="6" fill="#2c1d11"/>
+      <circle cx="73" cy="80" r="2" fill="#ffffff"/>
+      <circle cx="125" cy="82" r="6" fill="#2c1d11"/>
+      <circle cx="123" cy="80" r="2" fill="#ffffff"/>
+
+      <!-- 2 Má hồng -->
+      <ellipse cx="62" cy="98" rx="10" ry="6" fill="#ff8a9e" opacity="0.6"/>
+      <ellipse cx="138" cy="98" rx="10" ry="6" fill="#ff8a9e" opacity="0.6"/>
+
+      <!-- Chân trước tay gấu ôm Bó Hoa -->
+      <ellipse cx="65" cy="135" rx="16" ry="12" fill="url(#bearBodyGrad)" transform="rotate(20 65 135)"/>
+      <ellipse cx="135" cy="135" rx="16" ry="12" fill="url(#bearBodyGrad)" transform="rotate(-20 135 135)"/>
+
+      <!-- BÓ HOA CHÚ GẤU ÔM TRÊN TAY -->
+      <g transform="translate(100, 130)">
+        <!-- Cành hoa -->
+        <path d="M -5,10 L -2,30 M 0,10 L 0,32 M 5,10 L 2,30" stroke="#2ed573" stroke-width="3" stroke-linecap="round"/>
+        
+        <!-- Bông hoa 1 (Chính giữa) -->
+        <circle cx="0" cy="-5" r="10" fill="#ff7675"/>
+        <circle cx="0" cy="-5" r="4" fill="#ffeaa7"/>
+
+        <!-- Bông hoa 2 (Bên trái) -->
+        <circle cx="-12" cy="2" r="8" fill="#fd79a8"/>
+        <circle cx="-12" cy="2" r="3" fill="#ffeaa7"/>
+
+        <!-- Bông hoa 3 (Bên phải) -->
+        <circle cx="12" cy="2" r="8" fill="#fffa65"/>
+        <circle cx="12" cy="2" r="3" fill="#ff7675"/>
+
+        <!-- Bông hoa 4 (Phía trên) -->
+        <circle cx="0" cy="-18" r="7" fill="#ffffff"/>
+        <circle cx="0" cy="-18" r="3" fill="#fdcb6e"/>
+      </g>
+    </svg>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('effectsCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    const letterCanvas = document.getElementById('letterCanvas');
+    const letterCtx = letterCanvas.getContext('2d');
+    const letterCard = document.getElementById('letterCard');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    function resizeLetterCanvas() {
+      if (letterCard) {
+        letterCanvas.width = letterCard.clientWidth;
+        letterCanvas.height = letterCard.clientHeight;
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      resizeLetterCanvas();
+    });
+
+    let fireworks = [];
+    let particles = [];
+    let confetti = [];
+    let fallingItems = [];
+    let letterSparkles = [];
+    let isEffectsActive = false;
+
+    const colors = ['#ff4757', '#ffa502', '#2ed573', '#1e90ff', '#ed4245', '#e84393', '#f1c40f', '#ffffff', '#9b59b6'];
+
+    class LetterSparkle {
+      constructor(w, h) {
+        this.w = w;
+        this.h = h;
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
+        this.size = Math.random() * 14 + 10;
+        this.char = ['✨', '💛', '💖', '🌻', '⭐'][Math.floor(Math.random() * 5)];
+        this.opacity = Math.random();
+        this.speed = Math.random() * 0.02 + 0.01;
+      }
+
+      update() {
+        this.opacity += this.speed;
+        if (this.opacity > 1 || this.opacity < 0) {
+          this.speed = -this.speed;
+        }
+      }
+
+      draw() {
+        letterCtx.save();
+        letterCtx.globalAlpha = Math.abs(this.opacity);
+        letterCtx.font = `${this.size}px sans-serif`;
+        letterCtx.fillText(this.char, this.x, this.y);
+        letterCtx.restore();
+      }
+    }
+
+    class Firework {
+      constructor(sx, sy, tx, ty, isHeart = false) {
+        this.x = sx;
+        this.y = sy;
+        this.sx = sx;
+        this.sy = sy;
+        this.tx = tx;
+        this.ty = ty;
+        this.isHeart = isHeart;
+        this.distanceToTarget = Math.hypot(tx - sx, ty - sy);
+        this.distanceTraveled = 0;
+        this.coordinates = [];
+        this.coordinateCount = 4;
+        while (this.coordinateCount--) {
+          this.coordinates.push([this.x, this.y]);
+        }
+        this.angle = Math.atan2(ty - sy, tx - sx);
+        this.speed = 2;
+        this.acceleration = 1.05;
+        this.brightness = Math.random() * 50 + 50;
+      }
+
+      update(index) {
+        this.coordinates.pop();
+        this.coordinates.unshift([this.x, this.y]);
+        this.speed *= this.acceleration;
+        const vx = Math.cos(this.angle) * this.speed;
+        const vy = Math.sin(this.angle) * this.speed;
+        this.distanceTraveled = Math.hypot(this.x + vx - this.sx, this.y + vy - this.sy);
+
+        if (this.distanceTraveled >= this.distanceToTarget) {
+          if (this.isHeart) {
+            createHeartExplosion(this.tx, this.ty);
+          } else {
+            createParticles(this.tx, this.ty);
+          }
+          triggerScreenShake();
+          fireworks.splice(index, 1);
+        } else {
+          this.x += vx;
+          this.y += vy;
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+        ctx.lineTo(this.x, this.y);
+        ctx.strokeStyle = `hsl(${Math.random() * 360}, 100%, ${this.brightness}%)`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+    }
+
+    class Particle {
+      constructor(x, y, angle = null, speed = null, color = null) {
+        this.x = x;
+        this.y = y;
+        this.coordinates = [];
+        this.coordinateCount = 6;
+        while (this.coordinateCount--) {
+          this.coordinates.push([this.x, this.y]);
+        }
+        this.angle = angle !== null ? angle : Math.random() * Math.PI * 2;
+        this.speed = speed !== null ? speed : Math.random() * 12 + 1;
+        this.friction = 0.95;
+        this.gravity = 0.8;
+        this.hue = color ? color : Math.random() * 360;
+        this.brightness = Math.random() * 80 + 20;
+        this.alpha = 1;
+        this.decay = Math.random() * 0.02 + 0.012;
+      }
+
+      update(index) {
+        this.coordinates.pop();
+        this.coordinates.unshift([this.x, this.y]);
+        this.speed *= this.friction;
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed + this.gravity;
+        this.alpha -= this.decay;
+
+        if (this.alpha <= this.decay) {
+          particles.splice(index, 1);
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
+        ctx.lineTo(this.x, this.y);
+        ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+      }
+    }
+
+    function createHeartExplosion(x, y) {
+      const count = 80;
+      for (let i = 0; i < count; i++) {
+        const angle = (i / count) * Math.PI * 2;
+        const heartX = 16 * Math.pow(Math.sin(angle), 3);
+        const heartY = -(13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle));
+        const pAngle = Math.atan2(heartY, heartX);
+        const pSpeed = Math.hypot(heartX, heartY) * 0.45;
+        particles.push(new Particle(x, y, pAngle, pSpeed, 350));
+      }
+    }
+
+    function createParticles(x, y) {
+      let particleCount = 80;
+      while (particleCount--) {
+        particles.push(new Particle(x, y));
+      }
+    }
+
+    class Confetti {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 10 + 6;
+        this.speedX = (Math.random() - 0.5) * 16;
+        this.speedY = Math.random() * -18 - 6;
+        this.gravity = 0.4;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.rotation = Math.random() * 360;
+        this.rotSpeed = Math.random() * 10 - 5;
+      }
+
+      update(index) {
+        this.speedY += this.gravity;
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.rotation += this.rotSpeed;
+        if (this.y > height) {
+          confetti.splice(index, 1);
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+        ctx.restore();
+      }
+    }
+
+    function triggerConfettiBurst(x, y) {
+      for (let i = 0; i < 120; i++) {
+        confetti.push(new Confetti(x, y));
+      }
+    }
+
+    class FallingItem {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = -30;
+        this.size = Math.random() * 24 + 20;
+        this.speedY = Math.random() * 2.5 + 1.5;
+        this.speedX = Math.random() * 2 - 1;
+        const icons = ['🌻', '💖', '🤝', '🧸', '✨', '🌸', '💛', '🌷', '👭', '🎁', '🎉'];
+        this.char = icons[Math.floor(Math.random() * icons.length)];
+        this.rotation = Math.random() * 360;
+        this.rotSpeed = Math.random() * 2 - 1;
+      }
+
+      update() {
+        this.y += this.speedY;
+        this.x += Math.sin(this.y * 0.02) + this.speedX;
+        this.rotation += this.rotSpeed;
+
+        if (this.y > height + 30) {
+          this.y = -30;
+          this.x = Math.random() * width;
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.font = `${this.size}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(this.char, 0, 0);
+        ctx.restore();
+      }
+    }
+
+    function triggerScreenShake() {
+      const container = document.getElementById('mainContainer');
+      container.style.transform = `translate(${Math.random() * 6 - 3}px, ${Math.random() * 6 - 3}px)`;
+      setTimeout(() => {
+        container.style.transform = 'translate(0, 0)';
+      }, 50);
+    }
+
+    function loop() {
+      requestAnimationFrame(loop);
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+      ctx.fillRect(0, 0, width, height);
+      ctx.globalCompositeOperation = 'lighter';
+
+      let i = fireworks.length;
+      while (i--) {
+        fireworks[i].draw();
+        fireworks[i].update(i);
+      }
+
+      let j = particles.length;
+      while (j--) {
+        particles[j].draw();
+        particles[j].update(j);
+      }
+
+      let c = confetti.length;
+      while (c--) {
+        confetti[c].draw();
+        confetti[c].update(c);
+      }
+
+      if (isEffectsActive) {
+        for (let k = 0; k < fallingItems.length; k++) {
+          fallingItems[k].update();
+          fallingItems[k].draw();
+        }
+      }
+
+      if (letterCanvas.width > 0) {
+        letterCtx.clearRect(0, 0, letterCanvas.width, letterCanvas.height);
+        for (let s = 0; s < letterSparkles.length; s++) {
+          letterSparkles[s].update();
+          letterSparkles[s].draw();
+        }
+      }
+    }
+
+    loop();
+
+    function openFlowerEvent(e) {
+      const promptText = document.getElementById('promptText');
+      const greetingHeader = document.getElementById('greetingHeader');
+      
+      promptText.style.display = 'none';
+      greetingHeader.classList.add('show');
+
+      isEffectsActive = true;
+
+      const clickX = e.clientX || width / 2;
+      const clickY = e.clientY || height / 2;
+      triggerConfettiBurst(clickX, clickY);
+
+      if (fallingItems.length === 0) {
+        for (let i = 0; i < 80; i++) {
+          fallingItems.push(new FallingItem());
+        }
+      }
+
+      resizeLetterCanvas();
+      letterSparkles = [];
+      for (let s = 0; s < 30; s++) {
+        letterSparkles.push(new LetterSparkle(letterCanvas.width, letterCanvas.height));
+      }
+
+      // Bắn 4 quả pháo hoa rực rỡ
+      for (let f = 0; f < 4; f++) {
+        setTimeout(() => {
+          const startX = (width / 5) * (f + 1);
+          const targetX = startX + (Math.random() * 100 - 50);
+          const targetY = Math.random() * (height / 2.5) + 80;
+          fireworks.push(new Firework(startX, height, targetX, targetY, f % 2 === 0));
+        }, f * 180);
+      }
+
+      setTimeout(() => {
+        document.getElementById('letterOverlay').classList.add('active');
+        resizeLetterCanvas();
+      }, 1200);
+    }
+
+    function closeLetter() {
+      // Ẩn lá thư
+      document.getElementById('letterOverlay').classList.remove('active');
+
+      // Hiện Chú Gấu 3D Vector Ôm Bó Hoa (Không bao giờ lỗi)
+      const bearOverlay = document.getElementById('giantBearOverlay');
+      bearOverlay.classList.add('show');
+
+      // Bắn pháo giấy chúc mừng
+      triggerConfettiBurst(width / 2, height / 2);
+
+      // Tự động biến mất mượt mà sau 2.5 giây
+      setTimeout(() => {
+        bearOverlay.classList.remove('show');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
